@@ -1,4 +1,4 @@
-#!/bin/bash
+# /bin/bash
 
 dir=~/dotfiles
 olddir=~/dotfiles_old
