@@ -17,7 +17,7 @@ smart_borders on
 smart_gaps on
 gaps inner 5
 gaps outer 5
-#for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 4  
 
 # Color settings
 client.focused #00C1FF #00C1FF #000088 #00C1FF
@@ -187,7 +187,7 @@ client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color      
 # finds out, if available)
 bar {
 	position bottom
-        status_command i3blocks -c ~/.config/i3/i3blocks.conf
+        status_command i3blocks -c ~/.i3/i3blocks.conf
         tray_output primary
 
 colors {

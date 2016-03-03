@@ -2,7 +2,7 @@
 
 dir=~/dotfiles
 olddir=~/dotfiles_old
-files="bashrc vimrc"
+files=".bashrc .vimrc .i3/config .i3/i3blocks.conf"
 
 # create backup directory in ~/dotfiles_old
 echo "Creating $olddir for backup of any existing dotfiles in ~/"
@@ -18,7 +18,7 @@ echo "done"
 
 for file in $files; do
 	echo "Moving existing dotfiles in ~/ to $olddir"
-	mv ~/.$file ~/dotfiles_old/
+	mv ~/$file ~/dotfiles_old/
 	echo "Creating symlink to $file in ~/"
-	ln -s $dir/$file ~/.$file
+	ln -s $dir/$file ~/$file
 done
