@@ -1,0 +1,9 @@
+// Place your key bindings in this file to override the defaults
+[
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<Esc>"]
+        }
+    ]
+]
