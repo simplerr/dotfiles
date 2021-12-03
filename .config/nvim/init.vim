@@ -1,4 +1,5 @@
 let g:airline_powerline_fonts = 1
+let g:ccls_levels = 10
 
 " ------------------------------------------
 " Plugins
@@ -14,6 +15,7 @@ Plug 'bfrg/vim-cpp-modern'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'neovim/nvim-lspconfig'
+Plug 'm-pilia/vim-ccls'
 call plug#end()
 
 " ------------------------------------------
@@ -55,8 +57,7 @@ local on_attach = function(client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  --local opts = { noremap=true, silent=true }
-  local opts = { noremap=true }
+  local opts = { noremap=true, silent=true }
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -76,7 +77,12 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
 
+local ccls_cmd = "ccls"
+
+if vim.loop.os_uname().sysname == "Windows_NT" then
+    ccls_cmd = "C:/Program Files (x86)/ccls/bin/ccls.exe"
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
@@ -84,6 +90,7 @@ end
 local servers = { 'ccls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
+    cmd = { ccls_cmd },
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
@@ -149,19 +156,22 @@ set cursorline " highlight current line
 " ------------------------------------------
 :imap jj <ESC>
 let mapleader = "\<Space>"
-nnoremap <silent> <C-p> :Files<CR>
+"nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-p> :GFiles<CR>
 nnoremap <leader>f :Rg<SPACE>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <C-b>     :Buffers<CR>
 nnoremap <leader>c :vsp $MYVIMRC<CR>
 nnoremap <leader>s :source $MYVIMRC<CR>
 
-nnoremap <C-S-e> :NvimTreeFocus<CR>
-nnoremap <leader>e :NvimTreeFocus<CR>
+nnoremap <C-S-e>    :NvimTreeFocus<CR>
+nnoremap <leader>e  :NvimTreeFocus<CR>
 
 " Tab navigation like Firefox
-nnoremap <S-tab> :tabprevious<CR>
-nnoremap <tab>   :tabnext<CR>
-nnoremap <C-t>   :tabnew<CR>
-inoremap <C-t>   <Esc>:tabnew<CR>
+nnoremap <S-tab>    :tabprevious<CR>
+"nnoremap <tab>     :tabnext<CR>
+nnoremap <C-t>      :tabnew<CR>
+inoremap <C-t>      <Esc>:tabnew<CR>
+
+nnoremap gh         :CclsCallHierarchy -float<CR>
 
