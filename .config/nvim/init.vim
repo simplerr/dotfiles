@@ -4,6 +4,7 @@ let g:ccls_levels = 10
 " ------------------------------------------
 " Plugins
 " ------------------------------------------
+"call plug#begin(stdpath('data') . '/plugged')
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -16,6 +17,8 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'neovim/nvim-lspconfig'
 Plug 'm-pilia/vim-ccls'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
 call plug#end()
 
 " ------------------------------------------
@@ -70,13 +73,13 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  -- buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  -- buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 local ccls_cmd = "ccls"
@@ -100,9 +103,48 @@ end
 EOF
 
 " ------------------------------------------
+" Treesitter
+" ------------------------------------------
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    custom_captures = {
+      -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
+      --["foo.bar"] = "Identifier",
+      ["keyword.lol"] = "Identifier",
+    },
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+lua <<EOF
+require "nvim-treesitter.configs".setup {
+  playground = {
+    enable = true,
+    disable = {},
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+    persist_queries = false, -- Whether the query persists across vim sessions
+    keybindings = {
+      toggle_query_editor = 'o',
+      toggle_hl_groups = 'i',
+      toggle_injected_languages = 't',
+      toggle_anonymous_nodes = 'a',
+      toggle_language_display = 'I',
+      focus_language = 'f',
+      unfocus_language = 'F',
+      update = 'R',
+      goto_node = '<cr>',
+      show_help = '?',
+    },
+  }
+}
+EOF
+
+" ------------------------------------------
 " Mixed
 " ------------------------------------------
-
 colorscheme codedark
 let g:airline_theme = 'codedark'
 set termguicolors " for correct nvim-tree colors
@@ -119,6 +161,12 @@ set visualbell " disable audio bell
 set t_vb= " disable audio bell
 set laststatus=2 " always display status line
 set clipboard+=unnamedplus
+set updatetime=300
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set timeoutlen=1000 ttimeoutlen=0 " remove ESC timeout
+set cursorline " highlight current line
 
 " Display tabs and spaces
 set list
@@ -135,43 +183,38 @@ let g:cpp_member_highlight = 1
 " ------------------------------------------
 " FZF
 " ------------------------------------------
-"let g:fzf_layout = { 'down': '20%' }
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:fzf_preview_window = []
+let g:fzf_layout = { 'down': '15%' }
+"let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:fzf_action = {
     \ 'ctrl-t': 'tab split',
     \ 'ctrl-s': 'split',
     \ 'ctrl-d': 'vsplit'}
 
-" Indent using spaces
-set tabstop=4
-set shiftwidth=4
-set expandtab
-
-set timeoutlen=1000 ttimeoutlen=0 " remove ESC timeout
-
-set cursorline " highlight current line
-
 " ------------------------------------------
 " Key bindings
 " ------------------------------------------
 :imap jj <ESC>
-let mapleader = "\<Space>"
+nnoremap <Space> <Nop>
+let mapleader = " "
 "nnoremap <silent> <C-p> :Files<CR>
 nnoremap <silent> <C-p> :GFiles<CR>
-nnoremap <leader>f :Rg<SPACE>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <C-b>     :Buffers<CR>
-nnoremap <leader>c :vsp $MYVIMRC<CR>
-nnoremap <leader>s :source $MYVIMRC<CR>
 
-nnoremap <C-S-e>    :NvimTreeFocus<CR>
-nnoremap <leader>e  :NvimTreeFocus<CR>
+nnoremap <leader>f  :Rg<SPACE>
+nnoremap <leader>b  :Buffers<CR>
+nnoremap <C-b>      :Buffers<CR>
+nnoremap <leader>c  :vsp $MYVIMRC<CR>
+nnoremap <leader>s  :source $MYVIMRC<CR>
+nnoremap <leader>d  :NvimTreeFocus<CR>
 
 " Tab navigation like Firefox
 nnoremap <S-tab>    :tabprevious<CR>
 "nnoremap <tab>     :tabnext<CR>
 nnoremap <C-t>      :tabnew<CR>
 inoremap <C-t>      <Esc>:tabnew<CR>
+
+nnoremap <C-n>      :bnext<CR>
+nnoremap <C-m>      :bprev<CR>
 
 nnoremap gh         :CclsCallHierarchy -float<CR>
 
