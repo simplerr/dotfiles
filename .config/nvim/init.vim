@@ -19,6 +19,10 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'm-pilia/vim-ccls'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/playground'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
 call plug#end()
 
 " ------------------------------------------
@@ -37,7 +41,7 @@ require('nvim-tree').setup {
     view = {
         width = 30,
         height = 30,
-        hide_root_folder =  false,
+        hide_root_folder = false,
         side = 'left',
         auto_resize = true
     }
@@ -112,7 +116,6 @@ require'nvim-treesitter.configs'.setup {
     custom_captures = {
       -- Highlight the @foo.bar capture group with the "Identifier" highlight group.
       --["foo.bar"] = "Identifier",
-      ["keyword.lol"] = "Identifier",
     },
     additional_vim_regex_highlighting = false,
   },
@@ -139,6 +142,61 @@ require "nvim-treesitter.configs".setup {
       show_help = '?',
     },
   }
+}
+EOF
+
+" ------------------------------------------
+" Auto-completion
+" ------------------------------------------
+lua <<EOF
+-- Set completeopt to have a better completion experience
+vim.o.completeopt = 'menuone,noselect'
+
+-- luasnip setup
+local luasnip = require 'luasnip'
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ['<C-k>'] = cmp.mapping.select_prev_item(),
+    ['<C-j>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end,
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
 }
 EOF
 
