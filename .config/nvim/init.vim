@@ -12,7 +12,6 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tikhomirov/vim-glsl'
-Plug 'bfrg/vim-cpp-modern'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'neovim/nvim-lspconfig'
@@ -23,7 +22,48 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
+Plug 'phaazon/hop.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'kevinhwang91/nvim-bqf'
 call plug#end()
+
+" ------------------------------------------
+" Settings
+" ------------------------------------------
+colorscheme codedark
+let g:airline_theme = 'codedark'
+set termguicolors " for correct nvim-tree colors
+set path+=**
+set hidden
+set number
+set mouse=a
+set incsearch
+set hlsearch
+set wildmenu
+set splitright
+set splitbelow
+set visualbell " disable audio bell
+set t_vb= " disable audio bell
+set laststatus=2 " always display status line
+set clipboard+=unnamedplus
+set updatetime=100
+set tabstop=3
+set shiftwidth=3
+set expandtab
+set timeoutlen=1000 ttimeoutlen=0 " remove ESC timeout
+set cursorline " highlight current line
+set jumpoptions+=stack
+set signcolumn=yes
+
+" Display tabs and spaces
+set list
+set listchars=tab:›\
+set listchars+=lead:·
+set listchars+=trail:·
+set listchars+=multispace:·
+highlight SpecialKey ctermfg=240 guifg=grey70
+
 
 " ------------------------------------------
 " nvim-tree
@@ -72,18 +112,18 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  -- buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  -- buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   -- buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  -- buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 end
 
 local ccls_cmd = "ccls"
@@ -91,6 +131,13 @@ local ccls_cmd = "ccls"
 if vim.loop.os_uname().sysname == "Windows_NT" then
     ccls_cmd = "C:/Program Files (x86)/ccls/bin/ccls.exe"
 end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+      signs = false,
+      update_in_insert = false,
+    }
+)
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -119,11 +166,6 @@ require'nvim-treesitter.configs'.setup {
     },
     additional_vim_regex_highlighting = false,
   },
-}
-EOF
-
-lua <<EOF
-require "nvim-treesitter.configs".setup {
   playground = {
     enable = true,
     disable = {},
@@ -200,51 +242,103 @@ cmp.setup {
 }
 EOF
 
-" ------------------------------------------
-" Mixed
-" ------------------------------------------
-colorscheme codedark
-let g:airline_theme = 'codedark'
-set termguicolors " for correct nvim-tree colors
-set path+=**
-set hidden
-set number
-set mouse=a
-set incsearch
-set hlsearch
-set wildmenu
-set splitright
-set splitbelow
-set visualbell " disable audio bell
-set t_vb= " disable audio bell
-set laststatus=2 " always display status line
-set clipboard+=unnamedplus
-set updatetime=300
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set timeoutlen=1000 ttimeoutlen=0 " remove ESC timeout
-set cursorline " highlight current line
+lua <<EOF
+vim.cmd([[:highlight DiffDelete guifg=grey70]])
+vim.cmd([[:highlight GitSignsAdd guifg=#6A9955]])
+vim.cmd([[:highlight GitSignsChange guifg=#569CD6]])
+vim.cmd([[:highlight GitSignsDelete guifg=#F44747]])
 
-" Display tabs and spaces
-set list
-set listchars=tab:›\
-set listchars+=lead:·
-set listchars+=trail:·
-set listchars+=multispace:·
-highlight SpecialKey ctermfg=240 guifg=grey70
+require('gitsigns').setup {
+  signs = {
+    add          = {hl = 'GitSignsAdd'   , text = '▎', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+    change       = {hl = 'GitSignsChange', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    delete       = {hl = 'GitSignsDelete', text = '▎', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    topdelete    = {hl = 'GitSignsDelete', text = '▎', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    changedelete = {hl = 'GitSignsChange', text = '▎', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  },
+  signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
+  numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  keymaps = {
+    -- Default keymap options
+    noremap = true,
 
-" Syntax highlighting
-let g:cpp_attributes_highlight = 1
-let g:cpp_member_highlight = 1
+    ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'"},
+    ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'"},
+
+    ['n <leader>hs'] = '<cmd>Gitsigns stage_hunk<CR>',
+    ['v <leader>hs'] = ':Gitsigns stage_hunk<CR>',
+    ['n <leader>hu'] = '<cmd>Gitsigns undo_stage_hunk<CR>',
+    ['n <leader>hr'] = '<cmd>Gitsigns reset_hunk<CR>',
+    ['v <leader>hr'] = ':Gitsigns reset_hunk<CR>',
+    ['n <leader>hR'] = '<cmd>Gitsigns reset_buffer<CR>',
+    ['n <leader>hp'] = '<cmd>Gitsigns preview_hunk<CR>',
+    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
+    ['n <leader>hS'] = '<cmd>Gitsigns stage_buffer<CR>',
+    ['n <leader>hU'] = '<cmd>Gitsigns reset_buffer_index<CR>',
+
+    -- Text objects
+    ['o ih'] = ':<C-U>Gitsigns select_hunk<CR>',
+    ['x ih'] = ':<C-U>Gitsigns select_hunk<CR>'
+  },
+  watch_gitdir = {
+    interval = 1000,
+    follow_files = true
+  },
+  attach_to_untracked = true,
+  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+    delay = 100,
+    ignore_whitespace = false,
+  },
+  current_line_blame_formatter_opts = {
+    relative_time = false
+  },
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  max_file_length = 40000,
+  preview_config = {
+    -- Options passed to nvim_open_win
+    border = 'single',
+    style = 'minimal',
+    relative = 'cursor',
+    row = 0,
+    col = 1
+  },
+  yadm = {
+    enable = false
+  },
+  diff_opts = { internal = false }
+}
+EOF
+
+" ------------------------------------------
+" Additional plugins
+" ------------------------------------------
+lua <<EOF
+require'hop'.setup()
+EOF
 
 " ------------------------------------------
 " FZF
 " ------------------------------------------
+let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
+
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  ccl
+  botright copen
+endfunction
+
 let g:fzf_preview_window = []
 let g:fzf_layout = { 'down': '15%' }
 "let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 let g:fzf_action = {
+    \ 'ctrl-q': function('s:build_quickfix_list'),
     \ 'ctrl-t': 'tab split',
     \ 'ctrl-s': 'split',
     \ 'ctrl-d': 'vsplit'}
@@ -252,13 +346,21 @@ let g:fzf_action = {
 " ------------------------------------------
 " Key bindings
 " ------------------------------------------
+
+function FocusQuickfix()
+   ccl
+   botright copen
+endfunction
+
 :imap jj <ESC>
 nnoremap <Space> <Nop>
 let mapleader = " "
 "nnoremap <silent> <C-p> :Files<CR>
 nnoremap <silent> <C-p> :GFiles<CR>
 
+nnoremap <leader>o  :call FocusQuickfix()<CR>
 nnoremap <leader>f  :Rg<SPACE>
+nnoremap <C-f>      :Rg<SPACE>
 nnoremap <leader>b  :Buffers<CR>
 nnoremap <C-b>      :Buffers<CR>
 nnoremap <leader>c  :vsp $MYVIMRC<CR>
@@ -275,4 +377,5 @@ nnoremap <C-n>      :bnext<CR>
 nnoremap <C-m>      :bprev<CR>
 
 nnoremap gh         :CclsCallHierarchy -float<CR>
+nnoremap <leader>w  :HopWord<CR>
 
