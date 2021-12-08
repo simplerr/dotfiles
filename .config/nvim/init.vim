@@ -26,6 +26,7 @@ Plug 'phaazon/hop.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kevinhwang91/nvim-bqf'
+Plug 'akinsho/toggleterm.nvim'
 call plug#end()
 
 " ------------------------------------------
@@ -267,16 +268,16 @@ require('gitsigns').setup {
     ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'"},
     ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'"},
 
-    ['n <leader>hs'] = '<cmd>Gitsigns stage_hunk<CR>',
-    ['v <leader>hs'] = ':Gitsigns stage_hunk<CR>',
-    ['n <leader>hu'] = '<cmd>Gitsigns undo_stage_hunk<CR>',
-    ['n <leader>hr'] = '<cmd>Gitsigns reset_hunk<CR>',
-    ['v <leader>hr'] = ':Gitsigns reset_hunk<CR>',
-    ['n <leader>hR'] = '<cmd>Gitsigns reset_buffer<CR>',
-    ['n <leader>hp'] = '<cmd>Gitsigns preview_hunk<CR>',
-    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
-    ['n <leader>hS'] = '<cmd>Gitsigns stage_buffer<CR>',
-    ['n <leader>hU'] = '<cmd>Gitsigns reset_buffer_index<CR>',
+    ['n <leader>gs'] = '<cmd>Gitsigns stage_hunk<CR>',
+    ['v <leader>gs'] = ':Gitsigns stage_hunk<CR>',
+    ['n <leader>gu'] = '<cmd>Gitsigns undo_stage_hunk<CR>',
+    ['n <leader>gr'] = '<cmd>Gitsigns reset_hunk<CR>',
+    ['v <leader>gr'] = ':Gitsigns reset_hunk<CR>',
+    ['n <leader>gR'] = '<cmd>Gitsigns reset_buffer<CR>',
+    ['n <leader>gp'] = '<cmd>Gitsigns preview_hunk<CR>',
+    ['n <leader>gb'] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
+    ['n <leader>gS'] = '<cmd>Gitsigns stage_buffer<CR>',
+    ['n <leader>gU'] = '<cmd>Gitsigns reset_buffer_index<CR>',
 
     -- Text objects
     ['o ih'] = ':<C-U>Gitsigns select_hunk<CR>',
@@ -317,6 +318,38 @@ require('gitsigns').setup {
 EOF
 
 " ------------------------------------------
+" Terminal
+" ------------------------------------------
+lua <<EOF
+
+terminal_shell = "bash"
+if vim.loop.os_uname().sysname == "Windows_NT" then
+    terminal_shell = [["C:/Program Files/Git/bin/bash.exe"]]
+end
+
+require("toggleterm").setup{
+   shell = terminal_shell,
+   insert_mappings = true,
+   open_mapping = [[<c-g>]],
+}
+
+function _G.set_terminal_keymaps()
+  local opts = {noremap = true}
+  vim.api.nvim_buf_set_keymap(0, 't', '<esc>', [[<C-\><C-n>]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-w>h', [[<C-\><C-n><C-W>h]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-w>j', [[<C-\><C-n><C-W>j]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-w>k', [[<C-\><C-n><C-W>k]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-w>l', [[<C-\><C-n><C-W>l]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<C-w>p', [[<C-\><C-n><C-W>p]], opts)
+  vim.api.nvim_buf_set_keymap(0, 't', '<S-tab>', [[<C-\><C-n>:tabprevious<CR>]], opts)
+end
+
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+EOF
+
+" ------------------------------------------
 " Additional plugins
 " ------------------------------------------
 lua <<EOF
@@ -326,7 +359,6 @@ EOF
 " ------------------------------------------
 " FZF
 " ------------------------------------------
-let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 function! s:build_quickfix_list(lines)
   call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
