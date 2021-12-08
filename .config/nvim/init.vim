@@ -27,6 +27,8 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'kevinhwang91/nvim-bqf'
 Plug 'akinsho/toggleterm.nvim'
+Plug 'numToStr/Comment.nvim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 " ------------------------------------------
@@ -354,6 +356,7 @@ EOF
 " ------------------------------------------
 lua <<EOF
 require'hop'.setup()
+require'Comment'.setup()
 EOF
 
 " ------------------------------------------
@@ -410,4 +413,7 @@ nnoremap <C-m>      :bprev<CR>
 
 nnoremap gh         :CclsCallHierarchy -float<CR>
 nnoremap <leader>w  :HopWord<CR>
+
+nnoremap <C-e>      2<C-e>
+nnoremap <C-y>      2<C-y>
 
