@@ -1,0 +1,54 @@
+{
+    "vim.leader": "<space>",
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<Esc>"]
+        }
+    ],
+
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before":["g", "h"],
+            "commands":[
+                {"command":"ccls.callHierarchy","args":{"levels":10,"callee":true}},
+            ]
+        },
+        {
+            "before":["g", "r"],
+            "commands":[{"command":"editor.action.goToReferences"}]
+        },
+        {
+            "before": ["leader", "w"],
+            "after": ["leader", "leader", "leader", "b", "d", "w"]
+        },
+        {
+            "before": ["leader", "b"],
+            "after": ["leader", "leader", "b"]
+        },
+    ],
+    "editor.renderWhitespace": "boundary",
+    "workbench.editor.enablePreview": false,
+    "editor.fontSize": 13,
+    "clangd.path": "c:\\Users\\Axel\\AppData\\Roaming\\Code\\User\\globalStorage\\llvm-vs-code-extensions.vscode-clangd\\install\\11.0.0\\clangd_11.0.0\\bin\\clangd.exe",
+    "editor.minimap.enabled": false,
+    "editor.fontFamily": "Cascadia Mono",
+    "terminal.integrated.automationShell.windows": "C:\\Program Files\\Git\\git-bash.exe",
+    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\git-cmd.exe",
+    "terminal.integrated.shellArgs.windows": [
+        "--command=usr/bin/bash.exe",
+        "-l",
+        "-i"
+   ],
+    "editor.tabSize": 3,
+    "ccls.launch.command": "C:/Program Files (x86)/ccls/bin/ccls.exe",
+    "vim.neovimPath": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
+    "vim.neovimUseConfigFile": true,
+    "vim.enableNeovim": true,
+    "vscode-neovim.neovimExecutablePaths.win32": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
+    "ccls.codeLens.enabled": false,
+    "vim.easymotion": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": false,
+    "workbench.activityBar.visible": false,
+}

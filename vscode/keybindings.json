@@ -1,0 +1,62 @@
+// Place your key bindings in this file to override the defaults
+[
+   // Toggle between terminal and editor focus
+   { "key": "ctrl+;", "command": "workbench.action.terminal.focus"},
+   { "key": "ctrl+;", "command": "workbench.action.focusActiveEditorGroup", "when": "terminalFocus"},
+   {
+      "key": "F5",
+      "command": "workbench.action.tasks.runTask",
+      //"args": "Run PBR demo",
+      "args": "Run Editor",
+      //"args": "Run Raytrace demo",
+      //"args": "Run Marching Cubes demo",
+   },
+   {
+      "key": "ctrl+j",
+      "command": "selectNextSuggestion",
+      "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+   },
+   {
+         "key": "ctrl+k",
+         "command": "selectPrevSuggestion",
+         "when": "editorTextFocus && suggestWidgetMultipleSuggestions && suggestWidgetVisible"
+   },
+   {
+         "key": "ctrl+j",
+         "command": "workbench.action.quickOpenNavigateNext",
+         "when": "inQuickOpen"
+   },
+   {
+         "key": "ctrl+k",
+         "command": "workbench.action.quickOpenNavigatePrevious",
+         "when": "inQuickOpen"
+   },
+   {
+         "key": "ctrl+o",
+         "command": "workbench.action.navigateBack"
+   },
+   {
+         "key": "alt+left",
+         "command": "-workbench.action.navigateBack"
+   },
+   {
+         "key": "ctrl+i",
+         "command": "workbench.action.navigateForward"
+   },
+   {
+         "key": "alt+right",
+         "command": "-workbench.action.navigateForward"
+   },
+   {
+      "key": "ctrl-e",
+      "command": "editorScroll",
+      "args": { "by": "line", "to": "down", "value": 10, "revealCursor": true },
+      "when": "editorFocus"
+   },
+   {
+      "key": "ctrl-y",
+      "command": "editorScroll",
+      "args": { "by": "line", "to": "up", "value": 10, "revealCursor": true },
+      "when": "editorFocus"
+   }
+]
