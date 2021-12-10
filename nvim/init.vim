@@ -1,5 +1,7 @@
 let g:airline_powerline_fonts = 1
 let g:ccls_levels = 10
+let g:scrollview_excluded_filetypes = ['NvimTree']
+let g:scrollview_current_only = 1
 
 " ------------------------------------------
 " Plugins
@@ -29,6 +31,7 @@ Plug 'kevinhwang91/nvim-bqf'
 Plug 'akinsho/toggleterm.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'tpope/vim-fugitive'
+Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
 call plug#end()
 
 " ------------------------------------------
