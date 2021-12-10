@@ -280,7 +280,7 @@ require('gitsigns').setup {
     ['v <leader>gr'] = ':Gitsigns reset_hunk<CR>',
     ['n <leader>gR'] = '<cmd>Gitsigns reset_buffer<CR>',
     ['n <leader>gp'] = '<cmd>Gitsigns preview_hunk<CR>',
-    ['n <leader>gb'] = '<cmd>lua require"gitsigns".blame_line{full=true}<CR>',
+    ['n <leader>gb'] = '<cmd>lua require"gitsigns".blame_line{full=true, ignore_whitespace=true}<CR>',
     ['n <leader>gS'] = '<cmd>Gitsigns stage_buffer<CR>',
     ['n <leader>gU'] = '<cmd>Gitsigns reset_buffer_index<CR>',
 
@@ -298,7 +298,7 @@ require('gitsigns').setup {
     virt_text = true,
     virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
     delay = 100,
-    ignore_whitespace = false,
+    ignore_whitespace = true,
   },
   current_line_blame_formatter_opts = {
     relative_time = false
