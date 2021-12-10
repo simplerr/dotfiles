@@ -415,7 +415,7 @@ nnoremap <C-n>      :bnext<CR>
 nnoremap <C-m>      :bprev<CR>
 
 nnoremap gh         :CclsCallHierarchy -float<CR>
-nnoremap <leader>w  :HopWord<CR>
+nnoremap ,          :HopWord<CR>
 
 nnoremap <C-e>      3<C-e>
 nnoremap <C-y>      3<C-y>

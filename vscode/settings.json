@@ -18,13 +18,9 @@
             "before":["g", "r"],
             "commands":[{"command":"editor.action.goToReferences"}]
         },
-        {
-            "before": ["leader", "w"],
+        {   // EasyMotion
+            "before": [","],
             "after": ["leader", "leader", "leader", "b", "d", "w"]
-        },
-        {
-            "before": ["leader", "b"],
-            "after": ["leader", "leader", "b"]
         },
     ],
     "editor.renderWhitespace": "boundary",
