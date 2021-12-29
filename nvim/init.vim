@@ -70,6 +70,8 @@ set listchars+=trail:·
 set listchars+=multispace:·
 highlight SpecialKey ctermfg=240 guifg=grey70
 
+autocmd Filetype rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+
 
 " ------------------------------------------
 " nvim-tree
