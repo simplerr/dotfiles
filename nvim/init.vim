@@ -32,6 +32,7 @@ Plug 'akinsho/toggleterm.nvim'
 Plug 'numToStr/Comment.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'dstein64/nvim-scrollview', { 'branch': 'main' }
+Plug 'akinsho/bufferline.nvim'
 call plug#end()
 
 " ------------------------------------------
@@ -395,6 +396,13 @@ let g:fzf_action = {
     \ 'ctrl-d': 'vsplit'}
 
 " ------------------------------------------
+" Bufferline
+" ------------------------------------------
+lua << EOF
+require("bufferline").setup{}
+EOF
+
+" ------------------------------------------
 " Key bindings
 " ------------------------------------------
 
@@ -424,8 +432,8 @@ nnoremap <S-tab>    :tabprevious<CR>
 nnoremap <C-t>      :tabnew<CR>
 inoremap <C-t>      <Esc>:tabnew<CR>
 
-nnoremap <C-n>      :bnext<CR>
-nnoremap <C-m>      :bprev<CR>
+nnoremap <C-m>      :bnext<CR>
+nnoremap <C-n>      :bprev<CR>
 
 nnoremap gh         :CclsCallHierarchy -float<CR>
 nnoremap ,          :HopWord<CR>
