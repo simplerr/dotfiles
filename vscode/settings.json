@@ -6,7 +6,7 @@
             "after": ["<Esc>"]
         }
     ],
-
+    
     "vim.normalModeKeyBindingsNonRecursive": [
         {
             "before":["g", "h"],
@@ -22,6 +22,14 @@
             "before": [","],
             "after": ["leader", "leader", "leader", "b", "d", "w"]
         },
+        {
+            "before": ["S-k"],
+            "commands":[{"command": "editor.action.showHover"}]
+        },
+        {
+            "before": ["S-l"],
+            "commands":[{"command": "editor.action.goToTypeDefinition"}]
+        }
     ],
     "editor.renderWhitespace": "boundary",
     "workbench.editor.enablePreview": false,
@@ -35,7 +43,7 @@
         "--command=usr/bin/bash.exe",
         "-l",
         "-i"
-   ],
+    ],
     "editor.tabSize": 3,
     "ccls.launch.command": "C:/Program Files (x86)/ccls/bin/ccls.exe",
     "vim.neovimPath": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
@@ -47,4 +55,5 @@
     "vim.useSystemClipboard": true,
     "vim.useCtrlKeys": false,
     "workbench.activityBar.visible": false,
+    "rust-analyzer.inlayHints.enable": false,
 }
