@@ -2,6 +2,7 @@ let g:airline_powerline_fonts = 1
 let g:ccls_levels = 10
 let g:scrollview_excluded_filetypes = ['NvimTree']
 let g:scrollview_current_only = 1
+let g:rustfmt_command = "cargo fmt"
 
 " ------------------------------------------
 " Plugins
@@ -72,6 +73,7 @@ set listchars+=multispace:·
 highlight SpecialKey ctermfg=240 guifg=grey70
 
 autocmd Filetype rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd BufNewFile,BufRead *.rgen,*.rchit,*rmiss set syntax=glsl
 
 
 " ------------------------------------------
@@ -414,8 +416,8 @@ endfunction
 :imap jj <ESC>
 nnoremap <Space> <Nop>
 let mapleader = " "
-"nnoremap <silent> <C-p> :Files<CR>
-nnoremap <silent> <C-p> :GFiles<CR>
+nnoremap <silent> <C-p> :Files<CR>
+"nnoremap <silent> <C-p> :GFiles<CR>
 
 nnoremap <leader>o  :call FocusQuickfix()<CR>
 nnoremap <leader>f  :Rg<SPACE>
