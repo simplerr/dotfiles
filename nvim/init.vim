@@ -63,6 +63,7 @@ set timeoutlen=1000 ttimeoutlen=0 " remove ESC timeout
 set cursorline " highlight current line
 set jumpoptions+=stack
 set signcolumn=yes
+set backupcopy=yes " don't create unexpected file change events
 
 " Display tabs and spaces
 set list
