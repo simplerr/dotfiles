@@ -56,4 +56,6 @@
     "vim.useCtrlKeys": false,
     "workbench.activityBar.visible": false,
     "rust-analyzer.inlayHints.enable": false,
+    "editor.folding": false,
+    "editor.glyphMargin": false
 }
