@@ -888,13 +888,40 @@ require('lazy').setup({
     },
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+  -- VS Code Dark Modern theme - closest match to VS Code's Dark Modern
+  {
+    'Mofiqul/vscode.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    config = function()
+      require('vscode').setup({
+        -- Alternatively set style in setup
+        style = 'dark',
+
+        -- Enable transparent background
+        transparent = false,
+
+        -- Enable italic comment
+        italic_comments = false,
+
+        -- Disable nvim-tree background color
+        disable_nvimtree_bg = true,
+
+        -- Override colors (optional)
+        color_overrides = {},
+
+        -- Override highlight groups (optional)
+        group_overrides = {}
+      })
+
+      -- Load the colorscheme
+      vim.cmd.colorscheme 'vscode'
+    end,
+  },
+
+  -- Tokyo Night theme - kept as alternative option
+  {
+    'folke/tokyonight.nvim',
+    priority = 999, -- Lower priority so vscode loads first
     config = function()
       ---@diagnostic disable-next-line: missing-fields
       require('tokyonight').setup {
@@ -902,11 +929,8 @@ require('lazy').setup({
           comments = { italic = false }, -- Disable italics in comments
         },
       }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- Commented out so it doesn't override vscode theme
+      -- vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
 
