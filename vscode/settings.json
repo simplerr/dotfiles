@@ -1,61 +1,119 @@
 {
+    //"editor.defaultFormatter": "SoftwareApe.crustless",
+    //"editor.defaultFormatter": "clang-format",
+    "crustless.uncrustify": "/se/r3dm/sw/rocky-9-x86_64/inst/uncrustify/0.72.0/bin/uncrustify",
+    "crustless.config": "uncrustify.cfg",
+    "C_Cpp.intelliSenseEngine": "Disabled",
+    "C_Cpp.autocomplete": "Disabled", // So you don't get autocomplete from both extensions.
+    "C_Cpp.errorSquiggles": "Disabled", // So you don't get error squiggles from both extensions (clangd's seem to be more reliable anyway).
+    "cmake.configureOnOpen": false,
+    "cmake.showOptionsMovedNotification": false,
+    "clangd.arguments": [
+        "-log=info",
+        "-pretty",
+        "--background-index",
+        "--pch-storage=memory",
+        "--header-insertion=never",
+        "--clang-tidy",
+        "--compile-commands-dir=build/linux64"
+    ],
+    "gitblame.inlineMessageEnabled": true,
+    "editor.renderWhitespace": "boundary",
+    "editor.inlayHints.enabled": "off",
+    "vim.useCtrlKeys": false,
+    "vim.useSystemClipboard": true,
+    "vim.easymotion": true,
+    "editor.minimap.enabled": false,
     "vim.leader": "<space>",
     "vim.insertModeKeyBindings": [
         {
-            "before": ["j", "j"],
-            "after": ["<Esc>"]
+            "before": [
+                "j",
+                "j"
+            ],
+            "after": [
+                "<Esc>"
+            ]
         }
     ],
-    
     "vim.normalModeKeyBindingsNonRecursive": [
         {
-            "before":["g", "h"],
-            "commands":[
-                {"command":"ccls.callHierarchy","args":{"levels":10,"callee":true}},
+            "before": [
+                "g",
+                "h"
+            ],
+            "commands": [
+                {
+                    "command": "ccls.callHierarchy",
+                    "args": {
+                        "levels": 10,
+                        "callee": true
+                    }
+                },
             ]
         },
         {
-            "before":["g", "r"],
-            "commands":[{"command":"editor.action.goToReferences"}]
+            "before": [
+                "g",
+                "r"
+            ],
+            "commands": [
+                {
+                    "command": "editor.action.goToReferences"
+                }
+            ]
         },
-        {   // EasyMotion
-            "before": [","],
-            "after": ["leader", "leader", "leader", "b", "d", "w"]
+        { // EasyMotion
+            "before": [
+                ","
+            ],
+            "after": [
+                "leader",
+                "leader",
+                "leader",
+                "b",
+                "d",
+                "w"
+            ]
         },
         {
-            "before": ["S-k"],
-            "commands":[{"command": "editor.action.showHover"}]
+            "before": [
+                "S-k"
+            ],
+            "commands": [
+                {
+                    "command": "editor.debug.action.showDebugHover",
+                    "when": "inDebugMode"
+                },
+                {
+                    "command": "editor.action.showHover",
+                    "when": "!inDebugMode"
+                }
+            ]
         },
         {
-            "before": ["S-l"],
-            "commands":[{"command": "editor.action.goToTypeDefinition"}]
+            "before": [
+                "S-l"
+            ],
+            "commands": [
+                {
+                    "command": "editor.action.goToTypeDefinition"
+                }
+            ]
         }
     ],
-    "editor.renderWhitespace": "boundary",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "cmake.options.statusBarVisibility": "visible",
     "workbench.editor.enablePreview": false,
+    "window.openFoldersInNewWindow": "on",
+    "[cpp]": {
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    //"workbench.activityBar.location": "hidden"
+    "workbench.list.smoothScrolling": false,
+    "editor.smoothScrolling": false,
     "editor.fontSize": 13,
-    "clangd.path": "c:\\Users\\Axel\\AppData\\Roaming\\Code\\User\\globalStorage\\llvm-vs-code-extensions.vscode-clangd\\install\\11.0.0\\clangd_11.0.0\\bin\\clangd.exe",
-    "editor.minimap.enabled": false,
-    "editor.fontFamily": "Cascadia Mono",
-    "terminal.integrated.automationShell.windows": "C:\\Program Files\\Git\\git-bash.exe",
-    "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\git-cmd.exe",
-    "terminal.integrated.shellArgs.windows": [
-        "--command=usr/bin/bash.exe",
-        "-l",
-        "-i"
-    ],
-    "editor.tabSize": 3,
-    "ccls.launch.command": "C:/Program Files (x86)/ccls/bin/ccls.exe",
-    "vim.neovimPath": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
-    "vim.neovimUseConfigFile": true,
-    "vim.enableNeovim": true,
-    "vscode-neovim.neovimExecutablePaths.win32": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
-    "ccls.codeLens.enabled": false,
-    "vim.easymotion": true,
-    "vim.useSystemClipboard": true,
-    "vim.useCtrlKeys": false,
-    "workbench.activityBar.visible": false,
-    "rust-analyzer.inlayHints.enable": false,
-    "editor.folding": false,
-    "editor.glyphMargin": false
+    "editor.formatOnSave": false,
 }
