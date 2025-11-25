@@ -1,46 +1,37 @@
 #!/bin/bash
 
-# Dotfiles symlink setup script
-# This script creates symlinks from your dotfiles repository to the appropriate locations in your home directory
+set -e
 
-set -e  # Exit on any error
+# Default nvim config
+NVIM_CONFIG="lazyvim"
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+# Parse arguments
+for arg in "$@"; do
+    case $arg in
+        --nvim=*)
+            NVIM_CONFIG="${arg#*=}"
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: $0 [--nvim=<kickstart|lazyvim|old>]"
+            exit 0
+            ;;
+    esac
+done
 
-# Get the directory where this script is located (should be the dotfiles repo root)
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo -e "${BLUE}Setting up dotfiles symlinks...${NC}"
-echo -e "${BLUE}Dotfiles directory: ${DOTFILES_DIR}${NC}"
-
-# Function to create symlink with backup
 create_symlink() {
     local source="$1"
     local target="$2"
     local target_dir="$(dirname "$target")"
 
-    # Create target directory if it doesn't exist
-    if [[ ! -d "$target_dir" ]]; then
-        echo -e "${YELLOW}Creating directory: $target_dir${NC}"
-        mkdir -p "$target_dir"
-    fi
+    mkdir -p "$target_dir"
 
-    # If target already exists and is not a symlink, back it up
     if [[ -e "$target" && ! -L "$target" ]]; then
-        echo -e "${YELLOW}Backing up existing file: $target -> $target.backup${NC}"
         mv "$target" "$target.backup"
-    elif [[ -L "$target" ]]; then
-        echo -e "${YELLOW}Removing existing symlink: $target${NC}"
-        rm "$target"
     fi
 
-    # Create the symlink
-    echo -e "${GREEN}Creating symlink: $target -> $source${NC}"
     ln -sf "$source" "$target"
 }
 
@@ -54,9 +45,10 @@ if [[ -f "$DOTFILES_DIR/tmux/.tmux.conf" ]]; then
     create_symlink "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
 fi
 
-# Neovim configuration (entire directory)
-if [[ -d "$DOTFILES_DIR/nvim" ]]; then
-    create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
+# Neovim configuration
+NVIM_SOURCE="$DOTFILES_DIR/nvim_$NVIM_CONFIG"
+if [[ -d "$NVIM_SOURCE" ]]; then
+    create_symlink "$NVIM_SOURCE" "$HOME/.config/nvim"
 fi
 
 # VS Code configuration
@@ -82,5 +74,4 @@ if [[ -f "$DOTFILES_DIR/wezterm/wezterm.lua" ]]; then
     create_symlink "$DOTFILES_DIR/wezterm/wezterm.lua" "$HOME/.config/wezterm/wezterm.lua"
 fi
 
-echo -e "${GREEN}✓ Dotfiles symlink setup complete!${NC}"
-echo -e "${BLUE}Note: Original files have been backed up with .backup extension if they existed.${NC}"
+echo "Done."
