@@ -4,6 +4,23 @@
 
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 
+vim.keymap.set("n", "<leader>gK", function()
+  require("gitsigns").blame_line({ full = true })
+end, { desc = "Blame line" })
+
+vim.keymap.set("n", "<leader>gB", function()
+  -- Delete all gitsigns-blame buffers first
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    local bufname = vim.api.nvim_buf_get_name(buf)
+    if bufname:match("gitsigns%-blame://") and vim.api.nvim_buf_is_valid(buf) then
+      vim.api.nvim_buf_delete(buf, { force = true })
+      return
+    end
+  end
+  -- Open blame if no blame buffer existed
+  require("gitsigns").blame()
+end, { desc = "Toggle blame buffer" })
+
 vim.keymap.set("n", "<leader>ef", function()
   local explorer = Snacks.explorer.reveal()
   if explorer then
