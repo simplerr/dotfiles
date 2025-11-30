@@ -27,3 +27,10 @@ vim.keymap.set("n", "<leader>ef", function()
     explorer:focus()
   end
 end, { desc = "Focus/Reveal Explorer" })
+
+vim.keymap.set("n", "<C-S-E>", function()
+  local explorer = Snacks.explorer.reveal()
+  if explorer then
+    explorer:focus()
+  end
+end, { desc = "Focus/Reveal Explorer" })
