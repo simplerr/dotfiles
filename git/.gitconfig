@@ -1,0 +1,21 @@
+[user]
+	name = Axel Blackert
+	email = axel.blackert@gmail.com
+
+[alias]
+	co = checkout
+	st = status
+	br = branch
+	rbm = !git fetch && git rebase origin/master
+	sub = submodule
+	amend = commit --amend
+	ameno = commit --amend --no-edit
+	lf = log --graph --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(white dim)(%cd)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+	#lg = lf --first-parent
+	lg = lf
+	lgg = lg -15
+
+# todo: add lg and lgg aliases
+
+[protocol "file"]
+	allow = always
