@@ -36,3 +36,8 @@ alias icat='wezterm imgcat'
 
 echo "Loaded .bashrc"
 
+
+# Source user bashrc
+if [ -f ~/.bashrc.user ]; then
+    source ~/.bashrc.user
+fi

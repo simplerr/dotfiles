@@ -818,7 +818,10 @@ require('lazy').setup({
           --   end,
           -- },
         },
-        opts = {},
+        opts = {
+          history = true,
+          delete_check_events = "TextChanged",
+        },
       },
       'folke/lazydev.nvim',
     },
@@ -872,7 +875,7 @@ require('lazy').setup({
         },
       },
 
-      snippets = { preset = 'luasnip' },
+      snippets = { preset = 'default' },
 
       -- Blink.cmp includes an optional, recommended rust fuzzy matcher,
       -- which automatically downloads a prebuilt binary when enabled.

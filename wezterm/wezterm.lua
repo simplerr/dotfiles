@@ -15,6 +15,7 @@ return {
   -- Appearance
   --color_scheme = "Builtin Solarized Dark",
   color_scheme = "Dracula",
+  font = wezterm.font("JetBrains Mono Nerd Font", {weight="Regular"}),
   font_size = 10.0,
   hide_tab_bar_if_only_one_tab = false,
   enable_tab_bar = true,
