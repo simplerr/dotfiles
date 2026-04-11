@@ -7,6 +7,9 @@ vim.opt.listchars = {
   lead = "·",
   trail = "·",
 }
+-- Disable format on save globally
+vim.g.autoformat = false
 
--- Disable snacks animations by default
 vim.g.snacks_animate = false
+-- Disable inlay hints by default
+vim.g.lazyvim_no_inlay_hints = true

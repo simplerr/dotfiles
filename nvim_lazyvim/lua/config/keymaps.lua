@@ -3,10 +3,16 @@
 -- Add any additional keymaps here
 
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
+-- Unbind s so it restores default behaviour (delete char + insert)
+vim.keymap.del({ "n", "x", "o" }, "s")
 
 vim.keymap.set("n", "<leader>gK", function()
   require("gitsigns").blame_line({ full = true })
 end, { desc = "Blame line" })
+-- Bind , to flash.nvim jump (what s used to do)
+vim.keymap.set({ "n", "x", "o" }, ",", function()
+  require("flash").jump()
+end, { desc = "Flash" })
 
 vim.keymap.set("n", "<leader>gB", function()
   -- Delete all gitsigns-blame buffers first
@@ -34,3 +40,7 @@ vim.keymap.set("n", "<C-S-E>", function()
     explorer:focus()
   end
 end, { desc = "Focus/Reveal Explorer" })
+-- Bind Ctrl-P to fuzzy file finder
+vim.keymap.set("n", "<C-p>", function()
+  Snacks.picker.files()
+end, { desc = "Find Files" })

@@ -1,13 +1,11 @@
 return {
-  {
-    "folke/snacks.nvim",
-    opts = {
-      picker = {
-        win = {
-          input = {
-            keys = {
-              ["<Esc>"] = { "close", mode = { "n", "i" } },
-            },
+  "folke/snacks.nvim",
+  opts = {
+    picker = {
+      win = {
+        list = {
+          keys = {
+            ["<C-p>"] = false, -- unbind so global Ctrl-P (find files) works
           },
         },
       },
