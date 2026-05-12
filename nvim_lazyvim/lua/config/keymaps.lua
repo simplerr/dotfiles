@@ -14,33 +14,57 @@ vim.keymap.set({ "n", "x", "o" }, ",", function()
   require("flash").jump()
 end, { desc = "Flash" })
 
-vim.keymap.set("n", "<leader>gB", function()
-  -- Delete all gitsigns-blame buffers first
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    local bufname = vim.api.nvim_buf_get_name(buf)
-    if bufname:match("gitsigns%-blame://") and vim.api.nvim_buf_is_valid(buf) then
-      vim.api.nvim_buf_delete(buf, { force = true })
-      return
-    end
-  end
-  -- Open blame if no blame buffer existed
-  require("gitsigns").blame()
-end, { desc = "Toggle blame buffer" })
-
-vim.keymap.set("n", "<leader>ef", function()
-  local explorer = Snacks.explorer.reveal()
-  if explorer then
-    explorer:focus()
-  end
-end, { desc = "Focus/Reveal Explorer" })
-
-vim.keymap.set("n", "<C-S-E>", function()
-  local explorer = Snacks.explorer.reveal()
-  if explorer then
-    explorer:focus()
-  end
-end, { desc = "Focus/Reveal Explorer" })
 -- Bind Ctrl-P to fuzzy file finder
 vim.keymap.set("n", "<C-p>", function()
   Snacks.picker.files()
 end, { desc = "Find Files" })
+
+local function load_gitsigns()
+  require("lazy").load({ plugins = { "gitsigns.nvim" } })
+  return require("gitsigns")
+end
+
+local function pick_gitsigns_base()
+  local gs = load_gitsigns()
+  local ok, Snacks = pcall(require, "snacks")
+  if ok and Snacks.picker and Snacks.picker.git_log then
+    Snacks.picker.git_log({
+      title = "Gitsigns Base Commit",
+      confirm = function(picker, item)
+        picker:close()
+        if not item or not item.commit then
+          return
+        end
+        vim.schedule(function()
+          gs.change_base(item.commit)
+          vim.notify("Gitsigns base: " .. item.commit)
+        end)
+      end,
+    })
+    return
+  end
+
+  vim.ui.input({ prompt = "Gitsigns base commit: " }, function(commit)
+    if commit and commit ~= "" then
+      gs.change_base(commit)
+      vim.notify("Gitsigns base: " .. commit)
+    end
+  end)
+end
+
+pcall(vim.keymap.del, "n", "<leader>gB")
+pcall(vim.keymap.del, "x", "<leader>gB")
+
+vim.keymap.set("n", "<leader>gB", pick_gitsigns_base, { desc = "GitSigns Pick Base" })
+vim.keymap.set("n", "<leader>gR", function()
+  load_gitsigns().change_base()
+  vim.notify("Gitsigns base reset")
+end, { desc = "GitSigns Reset Base" })
+
+local ok, wk = pcall(require, "which-key")
+if ok then
+  wk.add({
+    { "<leader>gB", desc = "GitSigns Pick Base" },
+    { "<leader>gR", desc = "GitSigns Reset Base" },
+  })
+end
