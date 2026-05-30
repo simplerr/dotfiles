@@ -32,7 +32,7 @@ create_symlink() {
         mv "$target" "$target.backup"
     fi
 
-    ln -sf "$source" "$target"
+    ln -sfn "$source" "$target"
 }
 
 # Bash configuration
@@ -40,9 +40,19 @@ if [[ -f "$DOTFILES_DIR/bash/.bashrc" ]]; then
     create_symlink "$DOTFILES_DIR/bash/.bashrc" "$HOME/.bashrc"
 fi
 
+# Zsh configuration
+if [[ -f "$DOTFILES_DIR/zsh/.zshrc" ]]; then
+    create_symlink "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
+fi
+
 # Tmux configuration
 if [[ -f "$DOTFILES_DIR/tmux/.tmux.conf" ]]; then
     create_symlink "$DOTFILES_DIR/tmux/.tmux.conf" "$HOME/.tmux.conf"
+fi
+
+# Git configuration
+if [[ -f "$DOTFILES_DIR/git/.gitconfig" ]]; then
+    create_symlink "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 fi
 
 # Neovim configuration
