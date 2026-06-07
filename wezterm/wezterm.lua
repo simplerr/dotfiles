@@ -55,6 +55,7 @@ return {
 
     -- Toggle pane zoom
     {key="z", mods="ALT", action=act.TogglePaneZoomState},
+    {key="f", mods="ALT", action=act.TogglePaneZoomState},
 
     {key="h", mods="ALT|SHIFT", action=wezterm.action.SplitHorizontal{domain="CurrentPaneDomain"}},
     {key="v", mods="ALT|SHIFT", action=wezterm.action.SplitVertical{domain="CurrentPaneDomain"}},

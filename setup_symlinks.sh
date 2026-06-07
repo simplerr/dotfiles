@@ -84,4 +84,9 @@ if [[ -f "$DOTFILES_DIR/wezterm/wezterm.lua" ]]; then
     create_symlink "$DOTFILES_DIR/wezterm/wezterm.lua" "$HOME/.config/wezterm/wezterm.lua"
 fi
 
+# Karabiner Elements configuration
+if [[ -f "$DOTFILES_DIR/karabiner/karabiner.json" ]]; then
+    create_symlink "$DOTFILES_DIR/karabiner/karabiner.json" "$HOME/.config/karabiner/karabiner.json"
+fi
+
 echo "Done."
