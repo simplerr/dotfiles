@@ -1,16 +1,19 @@
 {
     "profiles": [
         {
-            "name": "Default profile",
-            "selected": true,
-            "virtual_hid_keyboard": { "keyboard_type_v2": "iso" },
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Tab: tap for Tab, hold for Left Option",
+                        "description": "Tab: tap for Tab, hold for Left Option (built-in keyboard only)",
+                        "enabled": true,
                         "manipulators": [
                             {
-                                "type": "basic",
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [{ "is_built_in_keyboard": true }]
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "tab",
                                     "modifiers": { "optional": ["any"] }
@@ -21,16 +24,16 @@
                                         "lazy": true
                                     }
                                 ],
-                                "to_if_alone": [
-                                    {
-                                        "key_code": "tab"
-                                    }
-                                ]
+                                "to_if_alone": [{ "key_code": "tab" }],
+                                "type": "basic"
                             }
                         ]
                     }
                 ]
-            }
+            },
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "iso" }
         }
     ]
 }
